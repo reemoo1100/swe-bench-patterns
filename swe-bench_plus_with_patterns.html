@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SWE-bench+ With Patterns</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      margin: 0;
+    }
+    #sidebar {
+      width: 30%;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    #content {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #fdfdfd;
+    }
+    details {
+      margin-bottom: 10px;
+    }
+    .instance {
+      cursor: pointer;
+      color: #0074D9;
+      text-decoration: underline;
+      margin-left: 15px;
+    }
+    .instance:hover {
+      color: #0056a3;
+    }
+    .label {
+      font-weight: bold;
+      margin-top: 1em;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+    h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <h2>Patterns</h2>
+    <div id="patternList"></div>
+  </div>
+  <div id="content">
+    <h2>Instance Details</h2>
+    <div id="instanceDetails">Click an instance to see details.</div>
+  </div>
+
+  <script>
+    const dataUrl = 'swe-bench_plus_with_patterns_with_gold_patch.json';
+
+    fetch(dataUrl)
+      .then(res => res.json())
+      .then(json => {
+        const patterns = {};
+        json.results.forEach(inst => {
+          const pat = inst.Pattern;
+          if (!patterns[pat]) patterns[pat] = [];
+          patterns[pat].push(inst);
+        });
+
+        const patternList = document.getElementById('patternList');
+
+        Object.entries(patterns).forEach(([pattern, instances]) => {
+          if (pattern === 'Correct - New' || pattern === 'New Implementation') return;
+
+          const details = document.createElement('details');
+          const summary = document.createElement('summary');
+          summary.textContent = `${pattern} (${instances.length})`;
+          details.appendChild(summary);
+
+          instances.forEach(inst => {
+            const div = document.createElement('div');
+            div.textContent = inst["Instance ID"];
+            div.className = 'instance';
+            div.onclick = () => showInstance(inst);
+            details.appendChild(div);
+          });
+
+          patternList.appendChild(details);
+        });
+      });
+
+        const patternList = document.getElementById('patternList');
+
+        Object.entries(patterns).forEach(([pattern, instances]) => {
+          if (pattern === 'Correct - New' || pattern === 'New Implementation') return;
+
+          const details = document.createElement('details');
+          const summary = document.createElement('summary');
+          summary.textContent = `${pattern} (${instances.length})`;
+          details.appendChild(summary);
+
+          instances.forEach(inst => {
+            const div = document.createElement('div');
+            div.textContent = inst["Instance ID"];
+            div.className = 'instance';
+            div.onclick = () => showInstance(inst);
+            details.appendChild(div);
+          });
+
+          patternList.appendChild(details);
+        });
+
+    function showInstance(inst) {
+      const container = document.getElementById('instanceDetails');
+      container.innerHTML = `
+        <h3>${inst["Instance ID"]}</h3>
+        <div class="section">
+          <div class="label">Problem Statement</div>
+          <pre>${inst["Problem Statement"] || 'N/A'}</pre>
+        </div>
+        <div class="section">
+          <div class="label">SWE-Agent + GPT-4 Model Patch</div>
+          <pre>${inst["SWE-Agent + GPT-4 model patch"]?.trim() ? inst["SWE-Agent + GPT-4 model patch"] : 'N/A'}</pre>
+        </div>
+        <div class="section">
+          <div class="label">Pattern Reason</div>
+          <pre>${inst["Reason"] || 'N/A'}</pre>
+        </div>
+        <div class="section">
+          <div class="label">Gold Patch</div>
+          <pre>${inst["gold patch"] || 'N/A'}</pre>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
