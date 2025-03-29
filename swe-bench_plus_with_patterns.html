@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SWE-bench+ With Patterns</title>
+  <title>SWE-bench+ With Patterns (Highlighted)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/diff.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -30,9 +33,15 @@
       color: #0074D9;
       text-decoration: underline;
       margin-left: 15px;
+      padding: 2px 4px;
+      border-radius: 4px;
     }
     .instance:hover {
       color: #0056a3;
+    }
+    .instance.active {
+      background-color: #0074D9;
+      color: white;
     }
     .label {
       font-weight: bold;
@@ -89,34 +98,17 @@
             const div = document.createElement('div');
             div.textContent = inst["Instance ID"];
             div.className = 'instance';
-            div.onclick = () => showInstance(inst);
+            div.onclick = () => {
+              document.querySelectorAll('.instance').forEach(el => el.classList.remove('active'));
+              div.classList.add('active');
+              showInstance(inst);
+            };
             details.appendChild(div);
           });
 
           patternList.appendChild(details);
         });
       });
-
-        const patternList = document.getElementById('patternList');
-
-        Object.entries(patterns).forEach(([pattern, instances]) => {
-          if (pattern === 'Correct - New' || pattern === 'New Implementation') return;
-
-          const details = document.createElement('details');
-          const summary = document.createElement('summary');
-          summary.textContent = `${pattern} (${instances.length})`;
-          details.appendChild(summary);
-
-          instances.forEach(inst => {
-            const div = document.createElement('div');
-            div.textContent = inst["Instance ID"];
-            div.className = 'instance';
-            div.onclick = () => showInstance(inst);
-            details.appendChild(div);
-          });
-
-          patternList.appendChild(details);
-        });
 
     function showInstance(inst) {
       const container = document.getElementById('instanceDetails');
@@ -128,7 +120,7 @@
         </div>
         <div class="section">
           <div class="label">SWE-Agent + GPT-4 Model Patch</div>
-          <pre>${inst["SWE-Agent + GPT-4 model patch"]?.trim() ? inst["SWE-Agent + GPT-4 model patch"] : 'N/A'}</pre>
+          <pre><code class="diff">${inst["SWE-Agent + GPT-4 model patch"]?.trim() ? inst["SWE-Agent + GPT-4 model patch"] : 'N/A'}</code></pre>
         </div>
         <div class="section">
           <div class="label">Pattern Reason</div>
@@ -136,9 +128,13 @@
         </div>
         <div class="section">
           <div class="label">Gold Patch</div>
-          <pre>${inst["gold patch"] || 'N/A'}</pre>
+          <pre><code class="diff">${inst["gold patch"] || 'N/A'}</code></pre>
         </div>
       `;
+
+      document.querySelectorAll('pre code').forEach(el => {
+        hljs.highlightElement(el);
+      });
     }
   </script>
 </body>
