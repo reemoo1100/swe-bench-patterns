@@ -1,0 +1,33 @@
+different files/functions pattern:
+django__django-13109: solution leak direct
+django__django-12286: incomplete (missing try and catch)
+
+
+Incomplete:
+django__django-11428: solution leak hint
+django__django-11583: correct (same as gold patch but no solution leak)
+django__django-12172: solution leak hint
+django__django-12503: solution leak direct
+django__django-13022: solution leak hint
+django__django-13447: solution leak hint
+django__django-13617: solution leak direct
+
+
+scikit-learn__scikit-learn-11346: diff files 
+django__django-14341: solution leak hint
+django__django-15698: solution leak direct
+django__django-15741: solution leak hint
+django__django-16046: solution leak direct
+django__django-16070: correct
+django__django-16116: solution leak Direct
+matplotlib__matplotlib-23203: correct
+matplotlib__matplotlib-23964: correct 
+matplotlib__matplotlib-24637: solution leak direct
+matplotlib__matplotlib-25404: solution leak hint
+matplotlib__matplotlib-26300: correct
+psf__requests-2674: correct
+psf__requests-2821: correct
+pytest-dev__pytest-10624: solution leak direct
+pytest-dev__pytest-5692: correct
+pytest-dev__pytest-6926: solution leak direct
+pytest-dev__pytest-7468: solution leak direct
