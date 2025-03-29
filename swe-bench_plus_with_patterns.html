@@ -59,6 +59,18 @@
     h3 {
       margin-top: 0;
     }
+    .tags {
+      margin-bottom: 1em;
+    }
+    .tag {
+      display: inline-block;
+      background-color: #eee;
+      color: #333;
+      border-radius: 3px;
+      padding: 2px 6px;
+      margin-right: 5px;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
@@ -72,7 +84,7 @@
   </div>
 
   <script>
-    const dataUrl = 'swe-bench_plus_with_patterns_with_gold_patch.json';
+    const dataUrl = 'swe-swe-bench_plus_with_patterns_with_gold_patch.json';
 
     fetch(dataUrl)
       .then(res => res.json())
@@ -112,8 +124,10 @@
 
     function showInstance(inst) {
       const container = document.getElementById('instanceDetails');
+      const tags = (inst["Dataset Tags"] || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
       container.innerHTML = `
         <h3>${inst["Instance ID"]}</h3>
+        <div class="tags">${tags}</div>
         <div class="section">
           <div class="label">Problem Statement</div>
           <pre>${inst["Problem Statement"] || 'N/A'}</pre>
